@@ -57,7 +57,7 @@ def inquery(timePoint, low, high):
             winRet.append(nextTimeVolatility)
         except KeyError:
             failNum += 1
-    return winRet, len(winRet) / len(winRet)+failNum
+    return winRet, len(winRet) / (len(winRet)+failNum)
 
 start = 0
 end = 1
