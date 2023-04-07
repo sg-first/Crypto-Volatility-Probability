@@ -35,7 +35,10 @@ def txtToDict(lines:list):
                 i += 1
             volatilityStr = lines[i]
             volatilityStr = volatilityStr.replace(' ', '')
-            volatility = float(volatilityStr.rstrip('%'))
+            volatilityStr = volatilityStr.rstrip('%')
+            # volatilityStr = volatilityStr.replace(' ', '.')
+            volatilityStr = volatilityStr.replace(',', '.')
+            volatility = float(volatilityStr)
             retDict[coinName] = volatility
         i += 1
     return retDict
@@ -57,10 +60,10 @@ def inquery(timePoint, low, high):
             winRet.append(nextTimeVolatility)
         except KeyError:
             failNum += 1
-    return winRet, failNum / (len(winRet)+failNum)
+    return failNum / (len(winRet)+failNum), winRet
 
 start = 0
-end = 4
+end = 5
 allRetDict = []
 
 for i in range(start, end+1):
