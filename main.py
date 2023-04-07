@@ -40,8 +40,8 @@ def txtToDict(lines:list):
         i += 1
     return retDict
 
-start = 1
-end = 1
+start = 0
+end = 0
 allRetDict = []
 
 for i in range(start, end+1):
