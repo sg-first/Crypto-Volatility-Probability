@@ -45,6 +45,6 @@ end = 0
 allRetDict = []
 
 for i in range(start, end+1):
-    f = open(str(i)+'.txt', encoding="utf-8")
+    f = open('./data/'+str(i)+'.txt', encoding="utf-8")
     lines = f.read().split('\n')
     allRetDict.append(txtToDict(lines))
