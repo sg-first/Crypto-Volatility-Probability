@@ -39,12 +39,27 @@ def txtToDict(lines:list):
             retDict[coinName] = volatility
         i += 1
     return retDict
+    def inquery():
+        # 查询涨跌幅
+        keys = []
+        values = []
+        for j in allRetDict[i].keys:
+            if j <= high and j >= low:
+                keys.append(j)
+        for k in keys:
+            values.append(allRetDict[i + 1].value)
+        return values
+
 
 start = 0
 end = 0
 allRetDict = []
+high = 0
+low = 0
 
 for i in range(start, end+1):
     f = open('./data/'+str(i)+'.txt', encoding="utf-8")
     lines = f.read().split('\n')
     allRetDict.append(txtToDict(lines))
+
+
