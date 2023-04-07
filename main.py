@@ -10,13 +10,15 @@ def getCoinName(line:str):
     first=0
     cnt=0
     for i in line:
-        if i==' ' and first==0:
-            first=cnt+1
+        if i.isalpha():
+            first=cnt
+            break
         cnt+=1
-    cnt=0
-    for i in line:
+    cnt+=1
+    for i in line[first:]:
         if i=='/':
             last=cnt-1
+            break
         cnt+=1
     return line[first:last]
 
