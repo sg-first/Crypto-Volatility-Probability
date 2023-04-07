@@ -57,18 +57,16 @@ def inquery(timePoint, low, high):
             winRet.append(nextTimeVolatility)
         except KeyError:
             failNum += 1
-    return winRet, len(winRet) / (len(winRet)+failNum)
+    return winRet, failNum / (len(winRet)+failNum)
 
 start = 0
-end = 1
+end = 2
 allRetDict = []
 
 for i in range(start, end+1):
-    f = open('./data/'+str(i)+'.txt', encoding="utf-8")
+    f = open('./data2/'+str(i)+'.txt', encoding="utf-8")
     lines = f.read().split('\n')
     allRetDict.append(txtToDict(lines))
 
-for i in range(0,6):
+for i in range(-6, 0):
     print(i, inquery(0, i, i+1))
-
-
