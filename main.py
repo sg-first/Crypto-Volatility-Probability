@@ -63,7 +63,7 @@ def inquery(timePoint, low, high):
     return failNum / (len(winRet)+failNum), winRet
 
 start = 0
-end = 3
+end = 5
 allRetDict = []
 
 for i in range(start, end+1):
@@ -72,6 +72,6 @@ for i in range(start, end+1):
     allRetDict.append(txtToDict(lines))
 
 for i in range(-3, 0):
-    querySub = 2
+    querySub = 4
     print(i, inquery(querySub, i, i+1))
     print(i+0.5, inquery(querySub, i+0.5, i + 1.5))
