@@ -49,7 +49,7 @@ def inquery(timePoint, low, high):
         if v <= high and v >= low:
             matchCoinName.append(k)
     if len(matchCoinName) == 0:
-        return [], 0
+        return 0, []
 
     nextTimePoint = allRetDict[timePoint+1]
     winRet = []
@@ -63,13 +63,15 @@ def inquery(timePoint, low, high):
     return failNum / (len(winRet)+failNum), winRet
 
 start = 0
-end = 6
+end = 4
 allRetDict = []
 
 for i in range(start, end+1):
-    f = open('./data2/'+str(i)+'.txt', encoding="utf-8")
+    f = open('./data/'+str(i)+'.txt', encoding="utf-8")
     lines = f.read().split('\n')
     allRetDict.append(txtToDict(lines))
 
-for i in range(-6, 0):
-    print(i, inquery(4, i, i+1))
+for i in range(-3, 0):
+    querySub = 3
+    print(i, inquery(querySub, i, i+1))
+    print(i+0.5, inquery(querySub, i+0.5, i + 1.5))
