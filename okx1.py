@@ -26,25 +26,31 @@ def pullAndCalc():
     increaseList = {}
     increaseListFull = {}
     for k,v in priceList2.items():
-        v = float(v)
-        v1 = float(priceList1[k])
-        increase = (v - v1) / v1
-        if increase<=0 and increase>-0.01:
-            increaseList[k] = increase
-        increaseListFull[k] = increase
+        try:
+            v = float(v)
+            v1 = float(priceList1[k])
+            increase = (v - v1) / v1
+            if increase<0 and increase>-0.01:
+                increaseList[k] = increase
+            increaseListFull[k] = increase
+        except ValueError:
+            continue
     allIncreaseList.append(increaseList)
 
     increaseList1 = allIncreaseList[len(allIncreaseList)-2]
     risingV = []
     fallingV = []
     for k, _ in increaseList1.items():
-        v = increaseListFull[k]
-        if v > 0:
-            risingV.append(v)
-            print(k, v, 'RISE')
-        else:
-            fallingV.append(v)
-            print(k, v, 'FALL')
+        try:
+            v = increaseListFull[k]
+            if v > 0:
+                risingV.append(v)
+                print(k, v, 'RISE')
+            else:
+                fallingV.append(v)
+                print(k, v, 'FALL')
+        except KeyError:
+            continue
     if len(risingV)!=0:
         val = sum(risingV) / len(risingV)
         print('rising AVG:', val*100)
@@ -58,5 +64,5 @@ import time
 
 scheduler = sched.scheduler(time.time, time.sleep)
 while True:
-    scheduler.enter(60*1, 0, pullAndCalc)
+    scheduler.enter(60*60, 0, pullAndCalc)
     scheduler.run()
