@@ -1,8 +1,8 @@
 import random
 
 times = 25
-zhiying = 0.48
-zhisun = -0.85
+zhiying = 0.5
+zhisun = -0.8
 zhiyingDistance = None
 zhisunDistance = None
 rate = None
@@ -28,7 +28,7 @@ def test():
             benjin += addMoney
             shouyi = benjin - zhuitou
             if shouyi >= mubiao:
-                print('SUCCESS', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+                # print('SUCCESS', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
                 return True, shouyi
         else:
             addMoney = zhisun/100 * beilv * benjin
@@ -45,11 +45,11 @@ def test():
                     benjin = needBenjin
                     if (zhuitou - benjin) >= mubiao:
                         shouyi = benjin - zhuitou
-                        print('FAIL', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+                        # print('FAIL', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
                         return False, shouyi
 
     shouyi = benjin - zhuitou
-    print('FAIL. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+    # print('FAIL. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
     return False, shouyi
 
 def expectations():
@@ -65,27 +65,27 @@ def expectations():
             fail += 1
     rate = win / (fail + win)
     exp = sum(allShouyi) / len(allShouyi)
-    print('>>>>', rate, exp, 'in', zhiying, zhisun)
+    print('>>>>胜率', rate, exp, 'in', zhiying, zhisun)
     return rate, exp
-expectations()
-'''
+# expectations()
+
 zhiying = 0.1
-zhisun = -0.85
+zhisun = -0.8
 bestZhiying = None
 bestZhisun = None
 bestRate = -1
-while zhiying <= 0.6:
-    zhisun = -0.85
-    while zhisun < 0:
+while zhiying < 1:
+    zhisun = -0.8
+    while zhisun < -0.1:
         print('now test', zhiying, zhisun)
         reset()
         rate, exp = expectations()
-        if rate > bestRate and exp > 2000:
+        if rate > bestRate and exp > 1500:
             bestRate = rate
             bestZhisun = zhisun
             bestZhiying = zhiying
-        zhisun += 0.01
-    zhiying += 0.01
+        zhisun += 0.1
+    zhiying += 0.1
 
 print(bestZhiying, bestZhisun, bestRate)
-'''
+
