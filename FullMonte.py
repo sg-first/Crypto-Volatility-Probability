@@ -1,21 +1,28 @@
 import random
 
-zhiying = 0.5
+times = 25
+zhiying = 0.48
 zhisun = -0.85
-zhiyingDistance = 1-zhiying
-zhisunDistance = 1+zhisun
-rate = zhiyingDistance / zhisunDistance * 100
+zhiyingDistance = None
+zhisunDistance = None
+rate = None
+def reset():
+    global zhiyingDistance, zhisunDistance, rate
+    zhiyingDistance = 1-zhiying
+    zhisunDistance = 1+zhisun
+    rate = zhiyingDistance / zhisunDistance * 100
+reset()
 print(rate, rate + 100)
 
 beilv = 75
 mubiao = 2500
 
 def test():
-    benjin = mubiao / (zhiying / 100 * beilv * 30)
+    benjin = mubiao / (zhiying / 100 * beilv * times)
     # print('本金', benjin)
     zhuitou = benjin
 
-    for i in range(1,31):
+    for i in range(1,times+1):
         if random.randint(0, int(rate) + 100) < rate:
             addMoney = zhiying/100 * beilv * benjin
             benjin += addMoney
@@ -27,7 +34,7 @@ def test():
             addMoney = zhisun/100 * beilv * benjin
             benjin += addMoney
             # 失败之后追投
-            shengyuDay = 31 - i
+            shengyuDay = times + 1 - i
             if shengyuDay == 0:
                 break
             else:
@@ -37,22 +44,48 @@ def test():
                     zhuitou += delta
                     benjin = needBenjin
                     if (zhuitou - benjin) >= mubiao:
+                        shouyi = benjin - zhuitou
                         print('FAIL', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
-                        return False, benjin - zhuitou
+                        return False, shouyi
 
     shouyi = benjin - zhuitou
     print('FAIL. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
     return False, shouyi
 
-win = 0
-fail = 0
-allShouyi = []
-for i in range(1000):
-    ret, shouyi = test()
-    allShouyi.append(shouyi)
-    if ret:
-        win += 1
-    else:
-        fail += 1
-print(win, fail)
-print(sum(allShouyi)/len(allShouyi))
+def expectations():
+    win = 0
+    fail = 0
+    allShouyi = []
+    for i in range(1000):
+        ret, shouyi = test()
+        allShouyi.append(shouyi)
+        if ret:
+            win += 1
+        else:
+            fail += 1
+    rate = win / (fail + win)
+    exp = sum(allShouyi) / len(allShouyi)
+    print('>>>>', rate, exp, 'in', zhiying, zhisun)
+    return rate, exp
+expectations()
+'''
+zhiying = 0.1
+zhisun = -0.85
+bestZhiying = None
+bestZhisun = None
+bestRate = -1
+while zhiying <= 0.6:
+    zhisun = -0.85
+    while zhisun < 0:
+        print('now test', zhiying, zhisun)
+        reset()
+        rate, exp = expectations()
+        if rate > bestRate and exp > 2000:
+            bestRate = rate
+            bestZhisun = zhisun
+            bestZhiying = zhiying
+        zhisun += 0.01
+    zhiying += 0.01
+
+print(bestZhiying, bestZhisun, bestRate)
+'''
