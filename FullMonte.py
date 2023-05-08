@@ -3,20 +3,21 @@ import random
 times = 730
 zhiying = 0.5
 zhisun = -0.8
-zhiyingDistance = None
-zhisunDistance = None
+_zhisun = None
+totalProb = None
 rate = None
 def reset():
-    global zhiyingDistance, zhisunDistance, rate
-    zhiyingDistance = 1-zhiying
-    zhisunDistance = 1+zhisun
-    rate = zhiyingDistance / zhisunDistance * 100
+    global rate, totalProb, _zhisun
+    _zhiying = zhiying * 10
+    _zhisun = -zhisun * 10
+    totalProb = _zhiying + _zhisun
+    rate = _zhisun / totalProb
 reset()
-print(rate, rate + 100)
+print(totalProb, _zhisun)
 
 beilv = 75
-mubiao = 1200
-maxTouru = 70
+mubiao = 3200
+maxTouru = 130
 
 def test():
     benjin = mubiao / (zhiying / 100 * beilv * times)
@@ -25,7 +26,7 @@ def test():
 
     for i in range(1, times+1):
         for _ in range(4):
-            if random.randint(0, int(rate) + 100) < rate:
+            if random.randint(0, totalProb) < _zhisun:
                 addMoney = zhiying/100 * beilv * benjin
                 benjin += addMoney
                 shouyi = benjin - zhuitou
@@ -93,4 +94,3 @@ while zhiying < 1:
 
 print(bestZhiying, bestZhisun, bestRate)
 '''
-
