@@ -1,38 +1,40 @@
 import random
 
-times = 730
-zhiying = 0.5
+times = 30
+zhiying = 0.1
 zhisun = -0.8
 _zhisun = None
 totalProb = None
 rate = None
-def reset():
-    global rate, totalProb, _zhisun
-    _zhiying = zhiying * 10
-    _zhisun = -zhisun * 10
+def reset(zhiyingPar, zhisunPar):
+    global rate, totalProb, _zhisun, zhiying, zhisun
+    zhiying = zhiyingPar
+    zhisun = zhisunPar
+    _zhiying = zhiying * 1000
+    _zhisun = -zhisun * 1000
     totalProb = _zhiying + _zhisun
     rate = _zhisun / totalProb
-reset()
-print(totalProb, _zhisun)
+    print(rate, totalProb, _zhisun, _zhiying)
+reset(zhiying, zhisun)
 
 beilv = 75
-mubiao = 3200
-maxTouru = 130
+mubiao = 3000
+maxTouru = 1000
 
 def test():
     benjin = mubiao / (zhiying / 100 * beilv * times)
-    print('本金', benjin)
+    # print('本金', benjin)
     zhuitou = benjin
 
     for i in range(1, times+1):
         for _ in range(4):
-            if random.randint(0, totalProb) < _zhisun:
+            if random.randint(0, int(totalProb)) < _zhisun:
                 addMoney = zhiying/100 * beilv * benjin
                 benjin += addMoney
                 shouyi = benjin - zhuitou
                 # print('WIN', benjin, shouyi)
                 if shouyi >= mubiao:
-                    print('SUCCESS', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+                    # print('SUCCESS', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
                     return True, shouyi
             else:
                 addMoney = zhisun/100 * beilv * benjin
@@ -50,18 +52,18 @@ def test():
                         # print('FAIL', benjin, benjin - zhuitou)
                         if (zhuitou - benjin) >= maxTouru:
                             shouyi = benjin - zhuitou
-                            print('FAIL', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+                            # print('FAIL', i, 'days. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
                             return False, shouyi
 
     shouyi = benjin - zhuitou
-    print('FAIL. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
+    # print('FAIL. Need money', zhuitou, '剩余', benjin, '收益', shouyi)
     return False, shouyi
 
 def expectations():
     win = 0
     fail = 0
     allShouyi = []
-    for i in range(1000):
+    for i in range(500):
         ret, shouyi = test()
         allShouyi.append(shouyi)
         if ret:
@@ -73,9 +75,8 @@ def expectations():
     print('>>>>胜率', rate, exp, 'in', zhiying, zhisun)
     return rate, exp
 expectations()
-'''
+
 zhiying = 0.1
-zhisun = -0.8
 bestZhiying = None
 bestZhisun = None
 bestRate = -1
@@ -83,9 +84,9 @@ while zhiying < 1:
     zhisun = -0.8
     while zhisun < -0.1:
         print('now test', zhiying, zhisun)
-        reset()
+        reset(zhiying, zhisun)
         rate, exp = expectations()
-        if rate > bestRate and exp > 1500:
+        if rate > bestRate:
             bestRate = rate
             bestZhisun = zhisun
             bestZhiying = zhiying
@@ -93,4 +94,3 @@ while zhiying < 1:
     zhiying += 0.1
 
 print(bestZhiying, bestZhisun, bestRate)
-'''
